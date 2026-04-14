@@ -1,19 +1,19 @@
 <odoo>
     <data>
 
-        <record id="mail_template_branding_update" model="mail.template">
-            <field name="inherit_id" ref="crm.crm_lead_mail_template"/> <!-- replace with actual ID -->
-            <field name="body_html" type="html">
+<!--        <record id="mail_template_branding_update" model="mail.template">-->
+<!--            <field name="inherit_id" ref="crm.crm_lead_mail_template"/> &lt;!&ndash; replace with actual ID &ndash;&gt;-->
+<!--            <field name="body_html" type="html">-->
 
-                <xpath expr="//td[contains(text(), 'Powered by')]" position="replace">
-                    <td align="center" style="min-width: 590px;">
-                        Powered by
-                        <t t-out="object.company_id.brand_label or 'Odoo'"/>
-                    </td>
-                </xpath>
+<!--                <xpath expr="//td[contains(text(), 'Powered by')]" position="replace">-->
+<!--                    <td align="center" style="min-width: 590px;">-->
+<!--                        Powered by-->
+<!--                        <t t-out="object.company_id.brand_label or 'Odoo'"/>-->
+<!--                    </td>-->
+<!--                </xpath>-->
 
-            </field>
-        </record>
+<!--            </field>-->
+<!--        </record>-->
 
     </data>
 </odoo>
