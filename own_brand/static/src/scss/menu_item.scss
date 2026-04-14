@@ -1,0 +1,121 @@
+/* ============================================
+   iOS-Style Dropdown Menu for Odoo 18
+   ============================================ */
+
+/* Dropdown container - iOS card style */
+.dropdown-menu,
+.o-dropdown--menu {
+    border-radius: 14px !important;
+    border: none !important;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12),
+                0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    padding: 6px !important;
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    overflow: hidden;
+    animation: iosMenuIn 0.2s cubic-bezier(0.2, 0.6, 0.35, 1) !important;
+}
+
+/* Entry animation */
+@keyframes iosMenuIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Dropdown items */
+.dropdown-menu .dropdown-item,
+.o-dropdown--menu .dropdown-item,
+.dropdown-menu .o-dropdown-item,
+.o-dropdown--menu .o-dropdown-item,
+.dropdown-menu a,
+.o-dropdown--menu a {
+    border-radius: 8px !important;
+    padding: 8px 12px !important;
+    margin: 1px 0 !important;
+    color: #1c1c1e !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+    transition: background-color 0.15s ease !important;
+    line-height: 1.5 !important;
+}
+
+/* Hover state - iOS light gray tap */
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus,
+.o-dropdown--menu .dropdown-item:hover,
+.o-dropdown--menu .dropdown-item:focus,
+.dropdown-menu a:hover,
+.dropdown-menu a:focus,
+.o-dropdown--menu a:hover,
+.o-dropdown--menu a:focus {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    color: #1c1c1e !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Active/pressed state */
+.dropdown-menu .dropdown-item:active,
+.o-dropdown--menu .dropdown-item:active,
+.dropdown-menu a:active,
+.o-dropdown--menu a:active {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+    color: #1c1c1e !important;
+    box-shadow: none !important;
+}
+
+/* Dividers - iOS thin separator */
+.dropdown-menu .dropdown-divider,
+.o-dropdown--menu .dropdown-divider {
+    margin: 4px 12px !important;
+    border-top: 0.5px solid rgba(0, 0, 0, 0.1) !important;
+    opacity: 1 !important;
+}
+
+/* Section headers */
+.dropdown-menu .dropdown-header,
+.o-dropdown--menu .dropdown-header {
+    padding: 10px 12px 4px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    color: #8e8e93 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.02em !important;
+}
+
+/* Popover style menus (same treatment) */
+.popover {
+    border-radius: 14px !important;
+    border: none !important;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12),
+                0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    overflow: hidden;
+}
+
+.popover .popover-body {
+    padding: 6px !important;
+}
+
+/* Scrollbar inside dropdown - thin iOS style */
+.dropdown-menu::-webkit-scrollbar {
+    width: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}

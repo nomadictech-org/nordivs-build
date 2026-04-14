@@ -1,0 +1,18 @@
+<odoo>
+    <record id="view_own_brand_form" model="ir.ui.view">
+        <field name="name">res.company.form.own.branding</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <!-- Insert after Social Media section -->
+            <xpath expr="//group[@name='social_media']" position="after">
+                <group string="Your Branding" name="own_branding">
+                    <field name="brand_label"/>
+                    <field name="brand_logo"/>
+                    <field name="favicon"/>
+                    <field name="ui_accent_color" widget="color"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

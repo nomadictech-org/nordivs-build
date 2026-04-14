@@ -1,0 +1,43 @@
+<odoo>
+    <template id="replace_powered_by_label"
+              inherit_id="web.login_layout"
+              name="Replace Powered By Label">
+        <xpath expr="//a[contains(@href,'odoo.com')]" position="replace">
+            <a href="#" target="_blank">
+                Powered by
+                <span t-esc="request.env.company.brand_label or 'Odoo'"/>
+            </a>
+        </xpath>
+    </template>
+
+    <template id="replace_brand_logo"
+              inherit_id="web.brand_promotion_message">
+        <xpath expr="//t[@t-set='odoo_logo']" position="replace">
+            <t t-set="odoo_logo">
+                <a target="_blank" href="#">
+                    <img t-if="request.env.company.brand_logo"
+                         t-att-src="image_data_uri(request.env.company.brand_logo)"
+                         style="width:auto;height:1em;vertical-align:baseline;"
+                         alt="Brand"/>
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="replace_favicon"
+              inherit_id="web.layout"
+              name="Replace Website Favicon">
+        <xpath expr="//link[@rel='shortcut icon']" position="replace">
+            <!-- use brand_favicon from res.company -->
+            <link rel="shortcut icon"
+                  type="image/x-icon"
+                  t-if="request.env.company.brand_favicon"
+                  t-att-href="'/web/image/res.company/%s/brand_favicon' % request.env.company.id"/>
+
+            <link rel="shortcut icon"
+                  type="image/x-icon"
+                  t-else=""
+                  href="/web/static/img/favicon.ico"/>
+        </xpath>
+    </template>
+</odoo>

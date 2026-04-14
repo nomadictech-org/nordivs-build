@@ -1,0 +1,27 @@
+/* Target the status bar area */
+.o_form_view .o_form_statusbar > .o_statusbar_status {
+
+    /* 1. Change the background colors of the active step */
+    & > .o_arrow_button_current {
+        --o-statusbar-background-active: #4a148c; /* Dark Purple active background */
+        --o-statusbar-border-active: #d1c4e9;     /* Light Purple active border */
+        color: #FFFFFF;                            /* Active step text color */
+    }
+
+    /* 2. Change colors of previous/next (secondary) steps */
+    & > .btn-secondary.o_arrow_button {
+        background-color: #f3e5f5; /* Very Light Purple for other steps */
+        border-color: #ce93d8;     /* Purple border for other steps */
+        color: #4a148c;             /* Dark Purple text color */
+
+        /* Prevent hover from changing back to grey */
+        &:hover {
+            background-color: #e1bee7;
+        }
+    }
+
+    /* 3. Increase padding for a cleaner look */
+    & > .o_arrow_button {
+        --o-statusbar-padding-x: 2rem; /* Was 1rem, doubled */
+    }
+}

@@ -1,0 +1,18 @@
+:root {
+    /* NomadicTech Primary Palette */
+    --primary-accent: #004589;
+    --primary-hover: #00376e;
+    --app-bar-accent: #ffffff;
+    --app-menu-font-color: #ffffff;
+    --kanban-bg-color: #f7f7f7;
+    --fullscreen-bg-color: #C5F0FC;
+    --full-screen-bg: url('/own_brand/static/src/img/background.jpg');
+}
+
+$primary-accent: var(--primary-accent);
+$primary-hover: var(--primary-hover);
+
+.o_main_navbar {
+    background-color: $primary-accent !important;
+    border-bottom: 1px solid $primary-hover !important;
+}

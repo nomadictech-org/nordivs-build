@@ -1,0 +1,129 @@
+/* =====================================
+   iOS Style Modal (Odoo Global Override)
+===================================== */
+
+/* Modal container */
+.modal-content {
+    border-radius: 18px !important;
+    overflow: hidden;
+    border: none !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+
+    /* Optional iOS glass feel */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+}
+
+
+/* =====================================
+   HEADER
+===================================== */
+
+.modal-header {
+    position: relative;
+    padding: 14px 18px;
+    padding-right: 50px; /* space for close button */
+
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Title styling (optional improvement) */
+.modal-title {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+
+/* =====================================
+   BODY
+===================================== */
+
+.modal-body {
+    padding: 16px 20px;
+}
+
+
+/* =====================================
+   FOOTER
+===================================== */
+
+.modal-footer {
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-top: 1px solid #eee;
+    padding: 12px 16px;
+}
+
+
+/* =====================================
+   iOS STYLE CLOSE BUTTON
+===================================== */
+
+/* Remove default bootstrap icon globally */
+.btn-close {
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+/* Custom iOS close button */
+.modal-header .btn-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    width: 28px;
+    height: 28px;
+
+    border-radius: 50% !important;
+    background-color: rgba(0, 0, 0, 0.06) !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    opacity: 1 !important;
+    cursor: pointer;
+
+    transition: all 0.15s ease;
+}
+
+/* Custom "X" icon */
+.modal-header .btn-close::before {
+    content: "✕";
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    line-height: 1;
+}
+
+/* Hover effect */
+.modal-header .btn-close:hover {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Click effect */
+.modal-header .btn-close:active {
+    transform: scale(0.92);
+}
+
+
+/* =====================================
+   EXTRA POLISH (Optional but Recommended)
+===================================== */
+
+/* Smooth modal animation feel */
+.modal.fade .modal-dialog {
+    transition: transform 0.2s ease-out;
+}
+
+/* Improve header alignment */
+.modal-header,
+.modal-footer {
+    display: flex;
+    align-items: center;
+}

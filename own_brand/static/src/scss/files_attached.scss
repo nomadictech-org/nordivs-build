@@ -1,0 +1,109 @@
+/* =====================================
+   iOS STYLE FILE ATTACHMENT CARDS
+===================================== */
+
+/* Container */
+.o_field_mail_composer_attachment_list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Each file card */
+.o_field_mail_composer_attachment_list .list-unstyled li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 10px 12px;
+    border-radius: 14px;
+
+    background: rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(10px);
+
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.o_field_mail_composer_attachment_list .list-unstyled li:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+/* Left section (icon + name) */
+.o_field_mail_composer_attachment_list .list-unstyled li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    flex-grow: 1;
+
+    text-decoration: none;
+    color: #222;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* File icon (dynamic look) */
+.o_field_mail_composer_attachment_list .list-unstyled li a::before {
+    content: "📄"; /* default */
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* Optional: different icons by extension */
+.o_field_mail_composer_attachment_list a[href$=".pdf"]::before {
+    content: "📕";
+}
+.o_field_mail_composer_attachment_list a[href$=".xls"],
+.o_field_mail_composer_attachment_list a[href$=".xlsx"]::before {
+    content: "📊";
+}
+.o_field_mail_composer_attachment_list a[href$=".png"],
+.o_field_mail_composer_attachment_list a[href$=".jpg"]::before {
+    content: "🖼️";
+}
+
+/* Remove button (iOS style) */
+.o_field_mail_composer_attachment_list button {
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+    border: none;
+
+    background: rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+/* Remove icon */
+.o_field_mail_composer_attachment_list button::before {
+    content: "✕";
+    font-size: 12px;
+    color: #333;
+}
+
+/* Hover delete */
+.o_field_mail_composer_attachment_list button:hover {
+    background: rgba(255, 0, 0, 0.15);
+}
+
+.o_field_mail_composer_attachment_list button:hover::before {
+    color: #d00;
+}
+
+/* Remove default Odoo icon */
+.o_field_mail_composer_attachment_list button i {
+    display: none !important;
+}

@@ -1,0 +1,42 @@
+/* Rounded corners + matching padding for kanban cards */
+.o_kanban_record:not(.o_legacy_kanban_record):not(.o_kanban_ghost) {
+    border-radius: 16px !important;
+    padding: 16px !important;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Circular iOS-style 3-dot menu button - no border */
+.o_kanban_record .o_dropdown_kanban .dropdown-toggle,
+.o_kanban_record .o_kanban_manage_toggle_button {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    transition: all 0.2s ease;
+    color: #adb5bd !important;
+}
+
+/* Hover state - light gray fill */
+.o_kanban_record .o_dropdown_kanban .dropdown-toggle:hover,
+.o_kanban_record .o_kanban_manage_toggle_button:hover {
+    background-color: #f0f0f0 !important;
+    color: #6c757d !important;
+}
+
+/* Active/focus state - slightly darker fill */
+.o_kanban_record .o_dropdown_kanban .dropdown-toggle:focus,
+.o_kanban_record .o_dropdown_kanban .dropdown-toggle:active,
+.o_kanban_record .o_dropdown_kanban .dropdown-toggle.show,
+.o_kanban_record .o_kanban_manage_toggle_button:focus,
+.o_kanban_record .o_kanban_manage_toggle_button:active {
+    background-color: #e8e8e8 !important;
+    box-shadow: none !important;
+    color: #495057 !important;
+    outline: none !important;
+}

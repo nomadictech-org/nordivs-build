@@ -1,0 +1,13 @@
+<odoo>
+    <template id="ui_theme_color" inherit_id="web.layout">
+        <xpath expr="//head" position="inside">
+            <t t-if="request.env.user.company_id.ui_accent_color">
+                <style>
+                    :root {
+                        --ui-accent-color: <t t-esc="request.env.user.company_id.ui_accent_color"/>;
+                    }
+                </style>
+            </t>
+        </xpath>
+    </template>
+</odoo>
