@@ -2,11 +2,10 @@
 <odoo>
     <data noupdate="1">
 
-        <record id="crm.mail_template_demo_crm_lead" model="mail.template">
+        <record id="mail_template_branding_update" model="mail.template">
+            <field name="inherit_id" ref="crm.mail_template_lead_create"/>
             <field name="body_html" type="html">
-                <!-- full original body_html here, with only this line changed -->
 
-                <!-- POWERED BY -->
                 <tr>
                     <td align="center" style="min-width: 590px;">
                         Powered by
@@ -16,6 +15,5 @@
 
             </field>
         </record>
-
     </data>
 </odoo>
