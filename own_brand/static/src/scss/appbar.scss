@@ -2,17 +2,22 @@
    iOS STYLE APP BAR (HEADER)
 ===================================== */
 
-/* Main navbar */
+/* Main navbar - iOS white style, maximum specificity to beat Odoo/jazzy theme */
+body .o_web_client nav.o_main_navbar,
+body .o_web_client .o_main_navbar,
+nav.o_main_navbar,
 .o_main_navbar {
-    background: rgba(255, 255, 255, 0.85) !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
     backdrop-filter: blur(20px);
 
-    border-bottom: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
 
     height: 56px;
     padding: 0 16px;
 
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06) !important;
 }
 
 
@@ -20,7 +25,7 @@
 .o_main_navbar .o_menu_brand {
     font-size: 15px;
     font-weight: 600;
-    color: #111;
+    color: #111 !important;
 
     display: flex;
     align-items: center;
@@ -35,7 +40,13 @@
 }
 
 
-/* Individual menu item */
+/* Individual menu item - clear ALL theme backgrounds/borders */
+body .o_web_client .o_main_navbar .o_menu_sections .dropdown-toggle,
+body .o_web_client .o_main_navbar .o_menu_sections a,
+body .o_web_client .o_main_navbar .o_menu_sections .o_nav_entry,
+.o_main_navbar .o_menu_sections .dropdown-toggle,
+.o_main_navbar .o_menu_sections a,
+.o_main_navbar .o_menu_sections .o_nav_entry,
 .o_main_navbar .dropdown-toggle,
 .o_main_navbar a {
     position: relative;
@@ -44,6 +55,12 @@
     font-weight: 500;
 
     color: #555 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
 
     padding: 6px 10px;
     border-radius: 8px;
@@ -92,7 +109,7 @@
 /* Icons */
 .o_main_navbar .o_menu_systray i {
     font-size: 16px;
-    color: #555;
+    color: #555 !important;
 }
 
 /* Hover icons */
@@ -458,4 +475,23 @@
     border: none !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
     padding: 6px !important;
+}
+
+
+.o_main_navbar .o_menu_sections .o_nav_entry, .o_main_navbar .o_menu_sections .dropdown-toggle
+ {
+    background: solid transparent!important;
+    border: 0px solid transparent;
+}
+
+
+.o_main_navbar .dropdown-toggle, .o_main_navbar a
+{
+    position: relative;
+    font-size: 13px;
+    font-weight: 500;
+    color: #dddbe8 !important;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
 }

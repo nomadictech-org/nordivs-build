@@ -1,19 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    mail_template_update.xml
+    ========================
+    WHY THE ORIGINAL APPROACH FAILED:
+        Using <record id="crm.mail_template_demo_crm_lead"> tries to update a
+        record owned by the "crm" module. Odoo validates the external ID at parse
+        time and raises:
+            AssertionError: The ID "crm.mail_template_demo_crm_lead"
+                            refers to an uninstalled module
+        This happens in Community when demo data is not loaded or the xml_id is
+        missing. Enterprise happens to load it, hiding the bug.
+
+    CORRECT APPROACH:
+        Template patching is handled in hooks.py via post_init_hook /
+        post_migrate_hook so it runs AFTER all modules are loaded, safely
+        handles missing records, and works in both Community and Enterprise.
+-->
 <odoo>
     <data>
-
-<!--        <record id="mail_template_branding_update" model="mail.template">-->
-<!--            <field name="inherit_id" ref="crm.crm_lead_mail_template"/> &lt;!&ndash; replace with actual ID &ndash;&gt;-->
-<!--            <field name="body_html" type="html">-->
-
-<!--                <xpath expr="//td[contains(text(), 'Powered by')]" position="replace">-->
-<!--                    <td align="center" style="min-width: 590px;">-->
-<!--                        Powered by-->
-<!--                        <t t-out="object.company_id.brand_label or 'Odoo'"/>-->
-<!--                    </td>-->
-<!--                </xpath>-->
-
-<!--            </field>-->
-<!--        </record>-->
-
+        <!-- Patching is done via post_init_hook in hooks.py -->
     </data>
 </odoo>

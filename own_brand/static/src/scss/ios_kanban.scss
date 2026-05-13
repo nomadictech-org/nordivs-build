@@ -40,3 +40,8 @@
     color: #495057 !important;
     outline: none !important;
 }
+
+
+.o_kanban_renderer .o_kanban_record:not(.o_legacy_kanban_record) aside img{
+    border-radius: 10px;
+    }

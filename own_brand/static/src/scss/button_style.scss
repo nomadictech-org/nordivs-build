@@ -1,5 +1,7 @@
 /* Target Odoo's primary buttons globally to apply the iOS look */
-.o_form_view, .o_kanban_view, .o_list_view {
+.o_form_view, .o_kanban_view, .o_list_view,
+.o_home_menu, .o_apps, .o_action_manager,
+.o_web_client {
     .btn-primary {
         /* 1. Shape: iOS Rounded */
         border-radius: 20px !important;
