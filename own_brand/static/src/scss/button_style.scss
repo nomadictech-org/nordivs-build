@@ -1,0 +1,77 @@
+.btn-primary {
+    border-radius: 7.0pt !important;
+    }
+.btn-secondary{
+    border-radius: 7.0pt !important;
+    }
+
+
+
+.o_field_statusbar > .o_statusbar_status {
+
+    // Set your desired corner radius
+    --o-statusbar-radius: 12px !important;
+
+    /* ---------------------------------------------------
+       1. RIGHT-MOST BUTTON (e.g., Sales Order)
+       --------------------------------------------------- */
+    > .o_arrow_button.o_first {
+
+        // Push outer clip-path past the right edge so it doesn't clip the curve
+        --o-statusbar-point-top-right: calc(100% + 15px) 0 !important;
+        --o-statusbar-point-middle-right: calc(100% + 15px) 50% !important;
+        --o-statusbar-point-bottom-right: calc(100% + 15px) 100% !important;
+
+        border-top-right-radius: var(--o-statusbar-radius) !important;
+        border-bottom-right-radius: var(--o-statusbar-radius) !important;
+
+        &::before {
+            // Push the inner clip-path past the right edge to disable the polygon border here
+            --o-statusbar-point-inner-top-right: calc(100% + 15px) 0 !important;
+            --o-statusbar-point-inner-middle-right: calc(100% + 15px) 50% !important;
+            --o-statusbar-point-inner-bottom-right: calc(100% + 15px) 100% !important;
+
+            border-top-right-radius: var(--o-statusbar-radius) !important;
+            border-bottom-right-radius: var(--o-statusbar-radius) !important;
+        }
+
+        // Draw a perfect, natively rounded border using box-shadow for the active state
+        &.o_arrow_button_current, &:active {
+            box-shadow:
+                inset calc(-1 * var(--o-statusbar-border-width)) 0 0 0 var(--o-statusbar-border-active), /* Right border */
+                inset 0 var(--o-statusbar-border-width) 0 0 var(--o-statusbar-border-active),            /* Top border */
+                inset 0 calc(-1 * var(--o-statusbar-border-width)) 0 0 var(--o-statusbar-border-active) !important; /* Bottom border */
+        }
+    }
+
+    /* ---------------------------------------------------
+       2. LEFT-MOST BUTTON (e.g., Quotation)
+       --------------------------------------------------- */
+    > .o_arrow_button.o_last {
+
+        // Push outer clip-path past the left edge (into negatives)
+        --o-statusbar-point-top-left: -15px 0 !important;
+        --o-statusbar-point-middle-left: -15px 50% !important;
+        --o-statusbar-point-bottom-left: -15px 100% !important;
+
+        border-top-left-radius: var(--o-statusbar-radius) !important;
+        border-bottom-left-radius: var(--o-statusbar-radius) !important;
+
+        &::before {
+            // Push inner clip-path past the left edge
+            --o-statusbar-point-inner-top-left: -15px 0 !important;
+            --o-statusbar-point-inner-middle-left: -15px 50% !important;
+            --o-statusbar-point-inner-bottom-left: -15px 100% !important;
+
+            border-top-left-radius: var(--o-statusbar-radius) !important;
+            border-bottom-left-radius: var(--o-statusbar-radius) !important;
+        }
+
+        &.o_arrow_button_current, &:active {
+            box-shadow:
+                inset var(--o-statusbar-border-width) 0 0 0 var(--o-statusbar-border-active),  /* Left border */
+                inset 0 var(--o-statusbar-border-width) 0 0 var(--o-statusbar-border-active),  /* Top border */
+                inset 0 calc(-1 * var(--o-statusbar-border-width)) 0 0 var(--o-statusbar-border-active) !important; /* Bottom border */
+        }
+    }
+}

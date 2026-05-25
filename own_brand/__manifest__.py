@@ -44,6 +44,7 @@ This module depends only on community addons (base, web, mail, crm).
 
         'web.assets_backend': [
             # --- Styles ---
+            'own_brand/static/src/scss/button_style.scss',
             'own_brand/static/src/scss/search_panel_style.scss',
             'own_brand/static/src/scss/panel_design_style.scss',
             'own_brand/static/src/webclient/navbar/navbar.scss',
