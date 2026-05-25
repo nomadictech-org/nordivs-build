@@ -1,0 +1,24 @@
+/* 1. The Close Button (Your existing code) */
+.btn-close {
+    border: 2px solid #6c757d !important;
+    border-radius: 50% !important;
+    background-size: 0.8em;
+}
+
+/* 2. The Modal Container */
+.modal-content {
+    /* Use your preferred size (12pt, 16px, 1rem, etc.) */
+    border-radius: 20px !important;
+
+    /* THE FIX: This forces all inner elements (like the header) to respect the curved border */
+    overflow: hidden !important;
+
+    /* Optional: Add a matching border to the modal itself */
+    /* border: 2px solid #6c757d !important; */
+}
+
+/* 3. Fallback for the Header (Just in case overflow: hidden conflicts with any dropdowns) */
+.modal-header {
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 16px !important;
+}
