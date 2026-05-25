@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="accounting_dashboard.Dashboard">
+        <div class="o_accounting_dashboard h-100 w-100">
+
+            <!-- Loading / Error states -->
+            <t t-if="state.loading">
+                <div class="o_dash_loading">
+                    <div class="o_dash_spinner"></div>
+                    <p>Loading dashboard...</p>
+                </div>
+            </t>
+
+            <t t-elif="state.error">
+                <div class="o_dash_error">
+                    <i class="fa fa-exclamation-triangle"/>
+                    <p><t t-esc="state.error"/></p>
+                    <button class="btn btn-primary" t-on-click="refresh">Retry</button>
+                </div>
+            </t>
+
+            <t t-else="">
+                <!-- ============ HEADER ============ -->
+                <div class="o_dash_header">
+                    <div class="o_dash_title">
+                        <h1>Accounting Dashboard <i class="fa fa-cog ms-2 o_dash_title_cog"/></h1>
+                    </div>
+                    <div class="o_dash_header_actions">
+                        <div class="o_dash_period">
+                            <i class="fa fa-filter"/>
+                            <select t-on-change="onPeriodChange" t-att-value="state.period">
+                                <option value="this_month" t-att-selected="state.period === 'this_month'">This Month</option>
+                                <option value="this_quarter" t-att-selected="state.period === 'this_quarter'">This Quarter</option>
+                                <option value="this_year" t-att-selected="state.period === 'this_year'">This Year</option>
+                            </select>
+                        </div>
+                        <div class="o_dash_search">
+                            <input type="text" placeholder="Search..."/>
+                            <i class="fa fa-search"/>
+                        </div>
+                        <button class="o_dash_refresh" t-on-click="refresh" title="Refresh">
+                            <i class="fa fa-refresh"/>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ============ KPI CARDS ============ -->
+                <div class="o_dash_kpi_row">
+
+                    <div class="o_dash_kpi_card">
+                        <div class="o_dash_kpi_icon o_kpi_icon_blue">
+                            <i class="fa fa-university"/>
+                        </div>
+                        <div class="o_dash_kpi_body">
+                            <div class="o_dash_kpi_label">Cash in Bank</div>
+                            <div class="o_dash_kpi_value" t-esc="formatCurrency(state.data.kpis.cash_in_bank)"/>
+                            <div class="o_dash_kpi_sub o_text_success">Auto from Odoo</div>
+                        </div>
+                    </div>
+
+                    <div class="o_dash_kpi_card">
+                        <div class="o_dash_kpi_icon o_kpi_icon_indigo">
+                            <i class="fa fa-user"/>
+                        </div>
+                        <div class="o_dash_kpi_body">
+                            <div class="o_dash_kpi_label">Accounts Receivable</div>
+                            <div class="o_dash_kpi_value" t-esc="formatCurrency(state.data.kpis.accounts_receivable)"/>
+                            <div class="o_dash_kpi_sub o_text_info">Auto from Odoo</div>
+                        </div>
+                    </div>
+
+                    <div class="o_dash_kpi_card">
+                        <div class="o_dash_kpi_body">
+                            <div class="o_dash_kpi_label">Revenue Total</div>
+                            <div class="o_dash_kpi_value o_text_purple" t-esc="formatCurrency(state.data.kpis.revenue_total)"/>
+                            <div class="o_dash_kpi_sub">Automatic Total</div>
+                        </div>
+                        <div class="o_dash_kpi_icon o_kpi_icon_purple">
+                            <i class="fa fa-line-chart"/>
+                        </div>
+                    </div>
+
+                    <div class="o_dash_kpi_card">
+                        <div class="o_dash_kpi_body">
+                            <div class="o_dash_kpi_label">Expenses Total</div>
+                            <div class="o_dash_kpi_value o_text_orange" t-esc="formatCurrency(state.data.kpis.expenses_total)"/>
+                            <div class="o_dash_kpi_sub">Automatic Total</div>
+                        </div>
+                        <div class="o_dash_kpi_icon o_kpi_icon_orange">
+                            <i class="fa fa-pie-chart"/>
+                        </div>
+                    </div>
+
+                    <div class="o_dash_kpi_card">
+                        <div class="o_dash_kpi_body">
+                            <div class="o_dash_kpi_label">Net Total</div>
+                            <div class="o_dash_kpi_value o_text_green" t-esc="formatCurrency(state.data.kpis.net_total)"/>
+                            <div class="o_dash_kpi_sub">Revenue - Expenses</div>
+                        </div>
+                        <div class="o_dash_kpi_icon o_kpi_icon_green">
+                            <i class="fa fa-line-chart"/>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ============ SUMMARIES ROW ============ -->
+                <div class="o_dash_grid_2">
+
+                    <!-- Revenue Summary -->
+                    <div class="o_dash_card">
+                        <div class="o_dash_card_header">
+                            <h3>Revenue Summary <i class="fa fa-info-circle ms-1 o_dash_info"/></h3>
+                            <div class="o_dash_card_icon o_kpi_icon_purple_soft"><i class="fa fa-bar-chart"/></div>
+                        </div>
+                        <table class="o_dash_table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Source</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="state.data.revenue_summary.lines" t-as="line" t-key="line_index">
+                                    <td t-esc="line.description"/>
+                                    <td t-esc="formatCurrency(line.amount)"/>
+                                    <td><span t-att-class="'o_dash_badge ' + line.source_class" t-esc="line.source"/></td>
+                                </tr>
+                                <tr class="o_dash_total_row">
+                                    <td t-esc="state.data.revenue_summary.total.description"/>
+                                    <td t-esc="formatCurrency(state.data.revenue_summary.total.amount)"/>
+                                    <td><span t-att-class="'o_dash_badge ' + state.data.revenue_summary.total.source_class" t-esc="state.data.revenue_summary.total.source"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Expense Summary -->
+                    <div class="o_dash_card">
+                        <div class="o_dash_card_header">
+                            <h3>Expense Summary <i class="fa fa-info-circle ms-1 o_dash_info"/></h3>
+                            <div class="o_dash_card_icon o_kpi_icon_orange_soft"><i class="fa fa-pie-chart"/></div>
+                        </div>
+                        <table class="o_dash_table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Source / Method</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="state.data.expense_summary.lines" t-as="line" t-key="line_index">
+                                    <td t-esc="line.description"/>
+                                    <td t-esc="formatCurrency(line.amount)"/>
+                                    <td><span t-att-class="'o_dash_badge ' + line.source_class" t-esc="line.source"/></td>
+                                </tr>
+                                <tr class="o_dash_total_row">
+                                    <td t-esc="state.data.expense_summary.total.description"/>
+                                    <td t-esc="formatCurrency(state.data.expense_summary.total.amount)"/>
+                                    <td><span t-att-class="'o_dash_badge ' + state.data.expense_summary.total.source_class" t-esc="state.data.expense_summary.total.source"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- ============ TRENDS ROW ============ -->
+                <div class="o_dash_grid_2">
+
+                    <!-- Revenue Trend (line chart) -->
+                    <div class="o_dash_card">
+                        <div class="o_dash_card_header">
+                            <h3>Revenue Trend</h3>
+                            <select class="o_dash_select_sm">
+                                <option>This Year</option>
+                            </select>
+                        </div>
+                        <div class="o_dash_chart_wrap">
+                            <svg t-ref="revenueChart" class="o_dash_svg" preserveAspectRatio="xMidYMid meet"></svg>
+                        </div>
+                    </div>
+
+                    <!-- Expense Trend (bar chart) -->
+                    <div class="o_dash_card">
+                        <div class="o_dash_card_header">
+                            <h3>Expense Trend</h3>
+                            <select class="o_dash_select_sm">
+                                <option>This Year</option>
+                            </select>
+                        </div>
+                        <div class="o_dash_chart_wrap">
+                            <svg t-ref="expenseChart" class="o_dash_svg" preserveAspectRatio="xMidYMid meet"></svg>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ============ NET SUMMARY + RECENT EXPENSES ============ -->
+                <div class="o_dash_grid_2">
+
+                    <!-- Net Summary with donut -->
+                    <div class="o_dash_card o_dash_net_summary">
+                        <div class="o_dash_card_header">
+                            <h3>Net Summary</h3>
+                            <div class="o_dash_card_icon o_kpi_icon_green_soft"><i class="fa fa-line-chart"/></div>
+                        </div>
+                        <div class="o_dash_net_body">
+                            <div class="o_dash_donut">
+                                <svg t-ref="donutChart" class="o_dash_svg_donut"></svg>
+                            </div>
+                            <div class="o_dash_net_info">
+                                <div class="o_dash_net_label">Net Total (Revenue - Expenses)</div>
+                                <div class="o_dash_net_value" t-esc="formatCurrency(state.data.net_summary.net_total)"/>
+                                <div class="o_dash_net_row">
+                                    <div>
+                                        <div class="o_dash_net_label">Revenue Total</div>
+                                        <div class="o_dash_net_sub" t-esc="formatCurrency(state.data.net_summary.revenue_total)"/>
+                                    </div>
+                                    <div>
+                                        <div class="o_dash_net_label">Expenses Total</div>
+                                        <div class="o_dash_net_sub" t-esc="formatCurrency(state.data.net_summary.expenses_total)"/>
+                                    </div>
+                                    <div>
+                                        <div class="o_dash_net_label">Net Total</div>
+                                        <div class="o_dash_net_sub o_text_green" t-esc="formatCurrency(state.data.net_summary.net_total)"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Expense Entries -->
+                    <div class="o_dash_card">
+                        <div class="o_dash_card_header">
+                            <h3>Recent Expense Entries</h3>
+                            <a class="o_dash_view_all" t-on-click="openExpenseEntries">View All</a>
+                        </div>
+                        <table class="o_dash_table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category / Region</th>
+                                    <th>Amount</th>
+                                    <th>Source</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="state.data.recent_expenses" t-as="exp" t-key="exp_index">
+                                    <td t-esc="formatDate(exp.date)"/>
+                                    <td t-esc="exp.description"/>
+                                    <td t-esc="exp.category"/>
+                                    <td t-esc="formatCurrency(exp.amount)"/>
+                                    <td><span t-att-class="'o_dash_badge ' + exp.source_class" t-esc="exp.source"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- ============ FOOTER ============ -->
+                <div class="o_dash_footer">
+                    <span>All amounts are in <t t-esc="state.data.currency.name"/></span>
+                    <span><i class="fa fa-refresh me-1"/> Last updated: Just now</span>
+                </div>
+
+            </t>
+        </div>
+    </t>
+
+</templates>

@@ -1,0 +1,106 @@
+// = Home Menu (app grid / dashboard) — fully self-contained
+// ============================================================================
+// No dependency on web_enterprise SCSS variables. Hardcoded values / CSS vars
+// reproduce the Enterprise "app dashboard" look in Community.
+
+// --- Background (applied on body when the home menu is open) ----------------
+// The background is per-company configurable on the Company form (Dashboard
+// Background page). The chosen value is injected as the CSS variable
+// --ownbrand-bg-image by ownbrand_background_service.js. If nothing is set we
+// fall back to the default dark gradient.
+.o_home_menu_background {
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #000511;
+    background-image: var(
+        --ownbrand-bg-image,
+        radial-gradient(circle at 20% 20%, #0c1f33 0%, #04101d 45%, #000511 100%)
+    ) !important;
+}
+
+// --- The grid itself --------------------------------------------------------
+.o_home_menu {
+    font-size: 1rem;
+
+    .container {
+        @include media-breakpoint-up(md) {
+            max-width: 750px !important;
+        }
+    }
+
+    .o_app {
+        text-decoration: none;
+
+        .o_app_icon {
+            width: 100%;
+            max-width: 80px;
+            border-radius: 12pt !important;
+            aspect-ratio: 1;
+            padding: 10px;
+            background-color: var(--AppSwitcherIcon-background, #ffffff);
+            object-fit: cover;
+            transform-origin: center bottom;
+            transition: box-shadow ease-in 0.1s, transform ease-in 0.1s;
+            box-shadow:
+                inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+                0 1px 1px rgba(0, 0, 0, 0.02),
+                0 2px 2px rgba(0, 0, 0, 0.02),
+                0 4px 4px rgba(0, 0, 0, 0.02),
+                0 8px 8px rgba(0, 0, 0, 0.02),
+                0 16px 16px rgba(0, 0, 0, 0.02);
+
+            .fa,
+            i {
+                font-size: 40px;
+            }
+        }
+
+        &:hover .o_app_icon {
+            box-shadow:
+                inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+                0 2px 2px rgba(0, 0, 0, 0.03),
+                0 4px 4px rgba(0, 0, 0, 0.03),
+                0 8px 8px rgba(0, 0, 0, 0.03),
+                0 12px 12px rgba(0, 0, 0, 0.03),
+                0 24px 24px rgba(0, 0, 0, 0.03);
+            transform: translateY(-2px);
+        }
+
+        &:active .o_app_icon {
+            transform: translateY(-2px) scale(0.98);
+            transition: none;
+        }
+
+        .o_caption {
+            color: var(--homeMenuCaption-color, #f1f5f9);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        &.o_focused {
+            background: rgba(255, 255, 255, 0.08);
+            outline: 1px solid #017e84;
+            border-radius: 0.5rem;
+        }
+    }
+
+    .o_dragged_app {
+        transition: transform 0.5s;
+        transform: rotate(6deg);
+
+        .o_app_icon {
+            box-shadow: 0 8px 15px -10px black;
+            transform: translateY(-1px);
+        }
+    }
+
+    .o_no_result {
+        color: #f1f5f9;
+        text-align: center;
+        margin-top: 3rem;
+        font-size: 1.1rem;
+    }
+}

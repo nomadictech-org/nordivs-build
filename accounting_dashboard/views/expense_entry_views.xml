@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List view -->
+    <record id="view_dashboard_expense_list" model="ir.ui.view">
+        <field name="name">accounting.dashboard.expense.list</field>
+        <field name="model">accounting.dashboard.expense</field>
+        <field name="arch" type="xml">
+            <list string="Expense Entries" multi_edit="1" sample="1">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="category"/>
+                <field name="region"/>
+                <field name="amount" sum="Total"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="source"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="view_dashboard_expense_form" model="ir.ui.view">
+        <field name="name">accounting.dashboard.expense.form</field>
+        <field name="model">accounting.dashboard.expense</field>
+        <field name="arch" type="xml">
+            <form string="Expense Entry">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Description"/>
+                        <h1><field name="name" placeholder="e.g. Marketing campaign Q2"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="category"/>
+                            <field name="region"/>
+                        </group>
+                        <group>
+                            <field name="amount"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                            <field name="source"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes" placeholder="Internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search view -->
+    <record id="view_dashboard_expense_search" model="ir.ui.view">
+        <field name="name">accounting.dashboard.expense.search</field>
+        <field name="model">accounting.dashboard.expense</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="category"/>
+                <field name="region"/>
+                <filter string="This Month" name="this_month"
+                        domain="[('date', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Manual" name="manual_source" domain="[('source', '=', 'manual')]"/>
+                <filter string="Google Sheet" name="gs_source" domain="[('source', '=', 'google_sheet')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Region" name="group_region" context="{'group_by': 'region'}"/>
+                    <filter string="Category" name="group_category" context="{'group_by': 'category'}"/>
+                    <filter string="Source" name="group_source" context="{'group_by': 'source'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_dashboard_expense" model="ir.actions.act_window">
+        <field name="name">Expense Entries</field>
+        <field name="res_model">accounting.dashboard.expense</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dashboard_expense_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first expense entry</p>
+            <p>Track manual or Google-Sheet sourced expenses that appear on the Accounting Dashboard.</p>
+        </field>
+    </record>
+</odoo>

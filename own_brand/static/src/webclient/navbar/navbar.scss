@@ -1,0 +1,73 @@
+// = Main Navbar (self-contained, no web_enterprise variable dependencies)
+// ============================================================================
+//
+// Visibility is driven by the body class `o_home_menu_background`, which the
+// home menu service toggles ON when the dashboard is shown and OFF when an app
+// is open (see home_menu_service.js -> document.body.classList.toggle(...)).
+
+// --- Hide the COMMUNITY apps menu (always) ----------------------------------
+// The community navbar ships its own "apps" grid button + dropdown. We provide
+// our own single back button, so the stock one is always hidden.
+.o_main_navbar > .o_navbar_apps_menu,
+.o_main_navbar > .o_grid_apps_menu,
+.o_main_navbar .o_navbar_apps_menu {
+    display: none !important;
+}
+
+// --- Our single back button -------------------------------------------------
+.o_main_navbar {
+    .o_menu_toggle {
+        color: var(--NavBar-menuToggle-color, #ffffff);
+        width: 46px;
+        padding: 0;
+
+        // iOS-style back chevron: thin, large, slightly bold.
+        .o_menu_toggle_back_icon {
+            font-size: 1.6rem;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        &:hover {
+            opacity: 0.85;
+        }
+    }
+}
+
+// ============================================================================
+// ON THE DASHBOARD (home menu open): <body> has .o_home_menu_background
+// ----------------------------------------------------------------------------
+// We target the elements with selectors specific enough (body class + element
+// class) and !important so they always beat the community navbar rules,
+// regardless of asset concatenation order or nesting depth.
+// ============================================================================
+
+// Blend the navbar into the dashboard background.
+body.o_home_menu_background .o_main_navbar {
+    background-color: transparent !important;
+    background-image: none !important;
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
+}
+
+// Hide our back button (nothing to go back to on the dashboard).
+body.o_home_menu_background .o_main_navbar .o_menu_toggle {
+    display: none !important;
+}
+
+// Hide everything that belongs to an open app. These are matched anywhere
+// under the home-menu body so nesting differences don't matter:
+//   - the app brand (e.g. "Sales") and its icon
+//   - the section menus (Orders / To Invoice / Products / Reporting / ...)
+//   - the breadcrumb
+body.o_home_menu_background .o_menu_brand,
+body.o_home_menu_background .o_menu_brand_icon,
+body.o_home_menu_background .o_menu_sections,
+body.o_home_menu_background .o_menu_systray .o_menu_sections,
+body.o_home_menu_background .o_breadcrumb {
+    display: none !important;
+}
+
+.o_hidden {
+    display: none !important;
+}

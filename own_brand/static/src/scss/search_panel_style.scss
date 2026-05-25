@@ -1,0 +1,33 @@
+.o_command_palette {
+    border-radius: 16px !important;
+    /* Clip the inner search row, list and footer to the rounded shape so the
+       corners don't appear square where children paint over them. */
+    overflow: hidden !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.18),
+        0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* The dialog wrapper that hosts the palette: make sure it doesn't re-impose
+   square corners or a clipping box around the palette. */
+.o_command_palette_dialog .modal-content,
+.o_command_palette_dialog .o_dialog .modal-content {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Round the footer's bottom corners explicitly (it carries its own bg). */
+.o_command_palette .o_command_palette_footer {
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+}
+
+/* Round the search row's top corners explicitly. */
+.o_command_palette .o_command_palette_search {
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 16px !important;
+}

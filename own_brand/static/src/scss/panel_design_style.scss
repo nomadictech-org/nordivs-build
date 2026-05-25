@@ -1,16 +1,27 @@
 /* =====================================
-   iOS STYLE DISCUSS CARDS (FIXED LAYOUT)
+   iOS STYLE DISCUSS CARDS (UPDATED)
 ===================================== */
+/* Main popup */
 .o-popover,
 .o-mail-MessagingMenu {
-    border-radius: 18px !important;
-    overflow: visible !important;
+    left: 10;
+    border-radius: 12px !important; /* iOS style 10-12pt */
+    overflow: hidden !important;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.10),
+        0 2px 8px rgba(0,0,0,0.05);
 }
 
 
 /* Popup container */
 .o-mail-MessagingMenu {
     padding: 10px !important;
+    background: rgba(255,255,255,0.82);
 }
 
 
@@ -18,23 +29,27 @@
 .o-mail-MessagingMenu .list-group-item {
     display: flex;
     align-items: flex-start;
-
     gap: 12px;
 
     padding: 12px 14px !important;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 
-    border-radius: 16px !important;
-    border: none !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255,255,255,0.35) !important;
 
-    background: rgba(0, 0, 0, 0.04);
+    background: rgba(255,255,255,0.72);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 
     transition: all 0.2s ease;
 }
 
+
 /* Hover */
 .o-mail-MessagingMenu .list-group-item:hover {
-    background: rgba(0, 0, 0, 0.08);
+    background: rgba(255,255,255,0.92);
+    transform: translateY(-1px);
 }
 
 
@@ -42,11 +57,13 @@
 .o-mail-MessagingMenu .list-group-item img,
 .o-mail-MessagingMenu .list-group-item .o-mail-Avatar,
 .o-mail-MessagingMenu .list-group-item .rounded-circle {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
 
     border-radius: 10px !important;
     flex-shrink: 0;
+
+    object-fit: cover;
 }
 
 
@@ -54,7 +71,8 @@
 .o-mail-MessagingMenu .list-group-item .flex-grow-1 {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
+    min-width: 0;
 }
 
 
@@ -63,7 +81,8 @@
 .o-mail-MessagingMenu .list-group-item .fw-bold {
     font-size: 14px;
     font-weight: 600;
-    color: #111;
+    color: #111827;
+    letter-spacing: -0.2px;
 }
 
 
@@ -71,9 +90,9 @@
 .o-mail-MessagingMenu .list-group-item span,
 .o-mail-MessagingMenu .list-group-item div {
     font-size: 13px;
-    color: #666;
+    color: #6b7280;
 
-    line-height: 1.4;
+    line-height: 1.45;
 }
 
 
@@ -85,8 +104,10 @@
     align-items: flex-end;
     gap: 6px;
 
-    font-size: 12px;
-    color: #888;
+    font-size: 11px;
+    color: #9ca3af;
+
+    flex-shrink: 0;
 }
 
 
@@ -94,7 +115,9 @@
 .o-mail-MessagingMenu .badge {
     border-radius: 999px;
     padding: 3px 8px;
+
     font-size: 11px;
+    font-weight: 600;
 }
 
 
@@ -104,14 +127,18 @@
 }
 
 
-/* HEADER TABS */
+/* HEADER */
 .o-mail-MessagingMenu-header {
-    padding: 6px 10px 10px;
+    padding: 6px 10px 12px;
 }
 
+
+/* HEADER TABS */
 .o-mail-MessagingMenu-header button {
-    border-radius: 8px !important;
-    padding: 4px 10px;
+    border-radius: 10px !important;
+    padding: 5px 12px;
+
+    transition: all 0.2s ease;
 }
 
 
@@ -119,4 +146,6 @@
 .o-mail-MessagingMenu-header .o-active {
     background: var(--ui-accent-color);
     color: #fff !important;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }

@@ -1,18 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_own_brand_form" model="ir.ui.view">
-        <field name="name">res.company.form.own.branding</field>
+
+    <record id="res_company_form_ownbrand" model="ir.ui.view">
+        <field name="name">res.company.form.ownbrand</field>
         <field name="model">res.company</field>
         <field name="inherit_id" ref="base.view_company_form"/>
         <field name="arch" type="xml">
-            <!-- Insert after Social Media section -->
-            <xpath expr="//group[@name='social_media']" position="after">
-                <group string="Your Branding" name="own_branding">
-                    <field name="brand_label"/>
-                    <field name="brand_logo"/>
-                    <field name="favicon"/>
-                    <field name="ui_accent_color" widget="color"/>
-                </group>
+            <!-- Add a dedicated page to the company form's notebook. -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Dashboard Background" name="ownbrand_background">
+                    <group>
+                        <group string="Background">
+                            <field name="ownbrand_bg_type"/>
+                            <field name="ownbrand_bg_color_1"
+                                   widget="color"
+                                   invisible="ownbrand_bg_type == 'image'"/>
+                            <field name="ownbrand_bg_color_2"
+                                   widget="color"
+                                   invisible="ownbrand_bg_type != 'gradient'"/>
+                            <field name="ownbrand_bg_angle"
+                                   invisible="ownbrand_bg_type != 'gradient'"/>
+                            <field name="ownbrand_bg_image"
+                                   widget="image"
+                                   invisible="ownbrand_bg_type != 'image'"/>
+                        </group>
+                        <group>
+                            <div class="text-muted" colspan="2">
+                                This background is applied to the Home Menu
+                                (app dashboard) for this company. Choose a
+                                gradient (two colors + angle), a single solid
+                                color, or upload an image. Refresh the page
+                                after saving to see the change.
+                            </div>
+                        </group>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>
+
 </odoo>

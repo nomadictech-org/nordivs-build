@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <!--
+        Extend the community navbar (web.NavBar):
+          - Tag the root <nav> (t-ref="nav") so JS can query its children.
+          - Add ONE left button (t-ref="backBtn"): an iOS-style back arrow.
+        Visibility of this button and of the app section menus / brand /
+        breadcrumb is handled by navbar.js (imperatively) AND by navbar.scss
+        (via body.o_home_menu_background) for robustness. The community apps
+        menu is hidden via CSS.
+    -->
+    <t t-name="own_brand.NavBar" t-inherit="web.NavBar" t-inherit-mode="primary">
+
+        <!-- Tag the root <nav>. -->
+        <xpath expr="//nav" position="attributes">
+            <attribute name="t-ref">nav</attribute>
+        </xpath>
+
+        <!-- Insert our back button as the first child of the navbar. -->
+        <xpath expr="//nav/*[1]" position="before">
+            <button type="button"
+                t-ref="backBtn"
+                class="o_menu_toggle btn border-0 d-flex align-items-center justify-content-center"
+                accesskey="h"
+                title="Back to dashboard"
+                aria-label="Back to dashboard"
+                t-on-click="() => this._onBackToDashboard()">
+                <i class="fa fa-angle-left o_menu_toggle_back_icon" role="img" aria-hidden="true"/>
+            </button>
+        </xpath>
+
+    </t>
+
+</templates>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dashboard_expense_user,accounting.dashboard.expense.user,model_accounting_dashboard_expense,account.group_account_invoice,1,1,1,0
+access_dashboard_expense_manager,accounting.dashboard.expense.manager,model_accounting_dashboard_expense,account.group_account_manager,1,1,1,1
