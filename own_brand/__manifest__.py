@@ -50,6 +50,7 @@ This module depends only on community addons (base, web, mail, crm).
             'own_brand/static/src/webclient/navbar/navbar.scss',
             'own_brand/static/src/webclient/home_menu/home_menu.scss',
             'own_brand/static/src/scss/widget_style.scss',
+            'own_brand/static/src/scss/views_style.scss',
 
             # --- JavaScript (load services before components that use them) ---
             'own_brand/static/src/webclient/background/ownbrand_background_service.js',
