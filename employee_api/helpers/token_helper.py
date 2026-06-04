@@ -21,7 +21,7 @@ TOKEN_BYTES = 32  # secrets.token_hex(32) produces 64 hex characters
 
 
 # -------------------------------------------------------------------------
-# Token Generation
+# Token Generation - for employee authentication purpose only
 # -------------------------------------------------------------------------
 
 def generate_token(employee, device_info=None):
