@@ -35,3 +35,25 @@ class ResCompany(models.Model):
         help="Custom image used as the dashboard background. "
              "Used when Background Type is 'Image'.",
     )
+
+    report_header_image = fields.Binary(
+        string="Report Header Image",
+        help="Image displayed at the top of every printed report (PDF) for "
+             "this company. Stretches to full page width.",
+    )
+    report_footer_image = fields.Binary(
+        string="Report Footer Image",
+        help="Image displayed at the bottom of every printed report (PDF) "
+             "for this company. Stretches to full page width.",
+    )
+    report_hide_default_header = fields.Boolean(
+        string="Hide Default Report Header",
+        help="When checked, the standard Odoo header (logo + company info) "
+             "is hidden so only the uploaded header image is shown.",
+    )
+    report_hide_default_footer = fields.Boolean(
+        string="Hide Default Report Footer",
+        help="When checked, the standard Odoo footer (company details + "
+             "page numbers) is hidden so only the uploaded footer image "
+             "is shown.",
+    )

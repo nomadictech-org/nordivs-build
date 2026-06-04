@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================ -->
+    <!-- Token Tree View                                                   -->
+    <!-- ================================================================ -->
+    <record id="employee_api_token_tree" model="ir.ui.view">
+        <field name="name">employee.api.token.tree</field>
+        <field name="model">employee.api.token</field>
+        <field name="arch" type="xml">
+            <list string="API Tokens"
+                  decoration-danger="not is_active"
+                  decoration-warning="expires_at &lt; current_date">
+                <field name="employee_id"/>
+                <field name="device_info"/>
+                <field name="is_active"/>
+                <field name="created_at"/>
+                <field name="last_used_at"/>
+                <field name="expires_at"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- Token Form View                                                   -->
+    <!-- ================================================================ -->
+    <record id="employee_api_token_form" model="ir.ui.view">
+        <field name="name">employee.api.token.form</field>
+        <field name="model">employee.api.token</field>
+        <field name="arch" type="xml">
+            <form string="API Token" create="false">
+                <header>
+                    <button name="revoke"
+                            string="Revoke Token"
+                            type="object"
+                            class="btn-danger"
+                            invisible="not is_active"
+                            confirm="This will immediately log out the employee's device. Continue?"/>
+                    <button name="action_revoke_all_for_employee"
+                            string="Revoke All for Employee"
+                            type="object"
+                            class="btn-danger"
+                            confirm="This will log out ALL devices for this employee. Continue?"/>
+                    <field name="is_active" widget="statusbar"
+                           statusbar_visible="True,False"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Session Info">
+                            <field name="employee_id"/>
+                            <field name="device_info"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group string="Timestamps">
+                            <field name="created_at"/>
+                            <field name="last_used_at"/>
+                            <field name="expires_at"/>
+                        </group>
+                    </group>
+                    <group string="Token" invisible="1">
+                        <!-- Token is hidden for security. Admins can see it
+                             in debug mode or via the shell if truly needed. -->
+                        <field name="token"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- Token Search View                                                 -->
+    <!-- ================================================================ -->
+    <record id="employee_api_token_search" model="ir.ui.view">
+        <field name="name">employee.api.token.search</field>
+        <field name="model">employee.api.token</field>
+        <field name="arch" type="xml">
+            <search string="API Tokens">
+                <field name="employee_id"/>
+                <field name="device_info"/>
+                <filter string="Active" name="active"
+                        domain="[('is_active', '=', True)]"/>
+                <filter string="Expired" name="expired"
+                        domain="[('expires_at', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Revoked" name="revoked"
+                        domain="[('is_active', '=', False)]"/>
+                <separator/>
+                <group string="Group By">
+                    <filter string="Employee" name="group_employee"
+                            context="{'group_by': 'employee_id'}"/>
+                    <filter string="Status" name="group_status"
+                            context="{'group_by': 'is_active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- Token Menu Action                                                 -->
+    <!-- ================================================================ -->
+    <record id="action_employee_api_tokens" model="ir.actions.act_window">
+        <field name="name">API Sessions</field>
+        <field name="res_model">employee.api.token</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="employee_api_token_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No API sessions found
+            </p>
+            <p>
+                API sessions are created when employees log in via the mobile app.
+                You can revoke sessions here to force a re-login.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu item under HR → Configuration -->
+    <menuitem id="menu_employee_api_tokens"
+              name="Mobile App Sessions"
+              parent="hr.menu_human_resources_configuration"
+              action="action_employee_api_tokens"
+              sequence="90"
+              groups="hr.group_hr_manager"/>
+
+</odoo>

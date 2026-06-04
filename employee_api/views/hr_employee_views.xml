@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================ -->
+    <!-- Employee Form: Mobile App Access Tab                              -->
+    <!-- ================================================================ -->
+    <record id="hr_employee_form_inherit_api" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.employee.api</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Mobile App" name="mobile_app"
+                      groups="hr.group_hr_manager">
+                    <group>
+                        <group string="Access Control">
+                            <field name="api_enabled" widget="boolean_toggle"/>
+                            <field name="api_pin_set" widget="boolean"
+                                   readonly="1"/>
+                            <field name="api_token_count" readonly="1"
+                                   string="Active Sessions"/>
+                        </group>
+                        <group string="Security Status">
+                            <field name="api_failed_attempts" readonly="1"/>
+                            <field name="api_locked_until" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <button name="action_set_api_pin_wizard"
+                                string="Set / Reset PIN"
+                                type="object"
+                                class="btn-primary"
+                                icon="fa-key"
+                                groups="hr.group_hr_manager"/>
+                        <button name="action_revoke_all_api_tokens"
+                                string="Revoke All Sessions"
+                                type="object"
+                                class="btn-warning"
+                                icon="fa-sign-out"
+                                invisible="api_token_count == 0"
+                                confirm="This will log out the employee from all mobile devices. Continue?"
+                                groups="hr.group_hr_manager"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- Employee Tree: Add API status columns                             -->
+    <!-- ================================================================ -->
+    <record id="hr_employee_tree_inherit_api" model="ir.ui.view">
+        <field name="name">hr.employee.tree.inherit.employee.api</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='department_id']" position="after">
+                <field name="api_enabled" string="App Access"
+                       optional="hide"
+                       groups="hr.group_hr_manager"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ================================================================ -->
+    <!-- PIN Wizard                                                        -->
+    <!-- ================================================================ -->
+    <!--
+        A transient model wizard that HR uses to set or reset an employee's
+        mobile app PIN from the Odoo backend. The PIN is hashed immediately
+        upon confirmation — the plaintext never persists.
+    -->
+
+</odoo>

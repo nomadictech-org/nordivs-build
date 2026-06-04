@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Inject the company's uploaded header/footer images into Odoo's report
+        layout. We inherit `web.external_layout_standard` (the default Odoo
+        layout used by the vast majority of companies).
+
+        IMPORTANT: in Odoo 18 the header/footer divs use `t-attf-class`
+        (computed at render time), NOT a literal `class` attribute. Therefore
+        `hasclass('header')` does NOT match — we must match against
+        `t-attf-class` with `contains(...)`.
+
+        Reference markup (from Odoo 18 source):
+            <div t-attf-class="header o_company_#{company.id}_layout"> ... </div>
+            <div t-attf-class="footer o_company_#{company.id}_layout"> ... </div>
+    -->
+
+    <!-- HEADER: append our image wrapper at the end of the header div -->
+    <template id="external_layout_header_standard"
+              inherit_id="web.external_layout_standard"
+              name="Own Brand: Report Header">
+        <xpath expr="//div[contains(@t-attf-class, 'header')]" position="inside">
+            <div t-if="company.report_header_image"
+                 class="o_ownbrand_report_header_wrapper mt-3">
+                <img t-att-src="image_data_uri(company.report_header_image)"
+                     style="width: 100%; height: auto; display: block;"
+                     alt="Header"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- FOOTER: append our image wrapper at the end of the footer div -->
+    <template id="external_layout_footer_standard"
+              inherit_id="web.external_layout_standard"
+              name="Own Brand: Report Footer">
+        <xpath expr="//div[contains(@t-attf-class, 'footer')]" position="inside">
+            <div t-if="company.report_footer_image"
+                 class="o_ownbrand_report_footer_wrapper mt-2">
+                <img t-att-src="image_data_uri(company.report_footer_image)"
+                     style="width: 100%; height: auto; display: block;"
+                     alt="Footer"/>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

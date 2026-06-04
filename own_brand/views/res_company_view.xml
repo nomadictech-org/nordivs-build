@@ -35,6 +35,31 @@
                         </group>
                     </group>
                 </page>
+                <page string="Report Branding" name="ownbrand_report_branding">
+                    <group>
+                        <group string="Header">
+                            <field name="report_header_image"
+                                   widget="image"
+                                   options="{'size': [800, 150]}"/>
+                        </group>
+                        <group string="Footer">
+                            <field name="report_footer_image"
+                                   widget="image"
+                                   options="{'size': [800, 150]}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <div class="text-muted" colspan="2">
+                            Upload images to use as the header and footer of
+                            every printed report (PDF). The images stretch to
+                            full page width and appear in addition to Odoo's
+                            standard header/footer. Leave a field empty to
+                            keep only the default Odoo content. Recommended
+                            sizes: ~1654px wide for A4 paper, with a height
+                            of 100-180px for a clean banner look.
+                        </div>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>

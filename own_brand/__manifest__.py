@@ -32,8 +32,9 @@ This module depends only on community addons (base, web, mail, crm).
         'crm',
     ],
 
-     'data': [
+    'data': [
         'views/res_company_view.xml',
+        'views/report_brand_template.xml'
     ],
 
     'assets': {

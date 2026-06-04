@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================================ -->
+        <!-- Cron: Clean Expired Tokens (Daily)                           -->
+        <!-- ============================================================ -->
+        <!-- 
+            Phase 1: Deactivates tokens past their expires_at.
+            Phase 2: Deletes tokens inactive for 7+ days.
+            Keeps the employee_api_token table lean under production load.
+        -->
+        <record id="cron_gc_expired_tokens" model="ir.cron">
+            <field name="name">Employee API: Clean expired tokens</field>
+            <field name="model_id" ref="model_employee_api_token"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_gc_expired_tokens()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active">True</field>
+            <field name="priority">100</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- Cron: Unlock Locked Accounts (Every 5 Minutes)               -->
+        <!-- ============================================================ -->
+        <!--
+            Clears lockouts that have expired naturally.
+            Without this, an employee whose 15-minute lockout passed
+            would still see "locked" until the login endpoint re-checks.
+        -->
+        <record id="cron_unlock_expired_locks" model="ir.cron">
+            <field name="name">Employee API: Unlock expired locks</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_unlock_expired_locks()</field>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+            <field name="priority">50</field>
+        </record>
+
+    </data>
+</odoo>

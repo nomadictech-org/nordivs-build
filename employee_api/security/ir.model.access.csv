@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_api_token_system,employee.api.token.system,model_employee_api_token,base.group_system,1,1,1,1
+access_employee_api_token_hr_manager,employee.api.token.hr_manager,model_employee_api_token,hr.group_hr_manager,1,1,0,0
+access_employee_api_pin_wizard,employee.api.pin.wizard,model_employee_api_pin_wizard,hr.group_hr_manager,1,1,1,1
