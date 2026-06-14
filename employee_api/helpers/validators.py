@@ -364,3 +364,196 @@ def _parse_date(value):
     if isinstance(value, date):
         return value
     return datetime.strptime(str(value).strip(), '%Y-%m-%d').date()
+
+
+def _parse_iso_datetime(value):
+    """Parse an ISO-8601 datetime, returning a naive UTC datetime.
+
+    Accepts 'Z' suffix or explicit offset; Odoo stores all datetimes as
+    naive UTC, so we strip the tzinfo after normalizing.
+    """
+    raw = str(value).strip().replace('Z', '+00:00')
+    parsed = datetime.fromisoformat(raw)
+    if parsed.tzinfo is not None:
+        # Convert to UTC then drop tzinfo
+        from datetime import timezone as _tz
+        parsed = parsed.astimezone(_tz.utc).replace(tzinfo=None)
+    return parsed
+
+
+# -------------------------------------------------------------------------
+# Geo Coordinate Validation (shared by attendance endpoints)
+# -------------------------------------------------------------------------
+
+def validate_geo_coords(data):
+    """Pull and validate optional latitude/longitude from a request body.
+
+    Returns (latitude, longitude, error). Either coord may be None if not
+    provided; both must be present together to be meaningful but we don't
+    enforce that — Odoo's geo fields tolerate one or the other.
+    """
+    lat = data.get('latitude')
+    lng = data.get('longitude')
+
+    if lat is not None and lat != '':
+        try:
+            lat = float(lat)
+            if not -90 <= lat <= 90:
+                raise ValueError
+        except (ValueError, TypeError):
+            return None, None, 'latitude must be a number between -90 and 90.'
+    else:
+        lat = None
+
+    if lng is not None and lng != '':
+        try:
+            lng = float(lng)
+            if not -180 <= lng <= 180:
+                raise ValueError
+        except (ValueError, TypeError):
+            return None, None, 'longitude must be a number between -180 and 180.'
+    else:
+        lng = None
+
+    return lat, lng, None
+
+
+# -------------------------------------------------------------------------
+# Manual Attendance Submission ("Apply Attendance")
+# -------------------------------------------------------------------------
+
+MAX_BACKDATE_DAYS = 30
+
+
+def validate_attendance_apply(data):
+    """Validate a manual attendance submission.
+
+    Expected:
+        {
+            "check_in": "2026-06-13T08:00:00Z",
+            "check_out": "2026-06-13T17:00:00Z",  (optional — open attendance if omitted)
+            "latitude": 18.5204,                  (optional)
+            "longitude": 73.8567                  (optional)
+        }
+
+    Rules:
+        - check_in is required
+        - check_in cannot be in the future (small +5min tolerance for clock skew)
+        - check_in cannot be more than MAX_BACKDATE_DAYS old
+        - check_out, if provided, must be strictly after check_in
+        - check_out cannot be in the future
+    """
+    check_in_raw = data.get('check_in')
+    if not check_in_raw:
+        return None, 'check_in is required (ISO 8601 datetime).'
+
+    try:
+        check_in = _parse_iso_datetime(check_in_raw)
+    except (ValueError, TypeError):
+        return None, 'check_in must be a valid ISO 8601 datetime.'
+
+    now = datetime.utcnow()
+    skew = timedelta(minutes=5)
+
+    if check_in > now + skew:
+        return None, 'check_in cannot be in the future.'
+    if (now - check_in).days > MAX_BACKDATE_DAYS:
+        return None, f'check_in cannot be more than {MAX_BACKDATE_DAYS} days in the past.'
+
+    check_out = None
+    check_out_raw = data.get('check_out')
+    if check_out_raw:
+        try:
+            check_out = _parse_iso_datetime(check_out_raw)
+        except (ValueError, TypeError):
+            return None, 'check_out must be a valid ISO 8601 datetime.'
+        if check_out <= check_in:
+            return None, 'check_out must be after check_in.'
+        if check_out > now + skew:
+            return None, 'check_out cannot be in the future.'
+
+    lat, lng, geo_err = validate_geo_coords(data)
+    if geo_err:
+        return None, geo_err
+
+    return {
+        'check_in': check_in,
+        'check_out': check_out,
+        'latitude': lat,
+        'longitude': lng,
+    }, None
+
+
+# -------------------------------------------------------------------------
+# Timesheet Submission ("Apply Timesheet")
+# -------------------------------------------------------------------------
+
+MAX_TIMESHEET_HOURS_PER_ENTRY = 24
+
+
+def validate_timesheet_create(data):
+    """Validate a timesheet entry submission.
+
+    Expected:
+        {
+            "project_id": 5,
+            "task_id": 12,           (optional — may be a project-level entry)
+            "date": "2026-06-13",
+            "unit_amount": 3.5,      (hours)
+            "description": "Worked on the auth refactor"  (optional)
+        }
+    """
+    project_id = data.get('project_id')
+    if not project_id:
+        return None, 'project_id is required.'
+    try:
+        project_id = int(project_id)
+        if project_id <= 0:
+            raise ValueError
+    except (ValueError, TypeError):
+        return None, 'project_id must be a positive integer.'
+
+    task_id = data.get('task_id')
+    if task_id is not None and task_id != '':
+        try:
+            task_id = int(task_id)
+            if task_id <= 0:
+                raise ValueError
+        except (ValueError, TypeError):
+            return None, 'task_id must be a positive integer.'
+    else:
+        task_id = None
+
+    date_raw = data.get('date')
+    if not date_raw:
+        return None, 'date is required (YYYY-MM-DD).'
+    try:
+        date_val = _parse_date(date_raw)
+    except (ValueError, TypeError):
+        return None, 'date must be a valid date (YYYY-MM-DD).'
+
+    if date_val > date.today() + timedelta(days=1):
+        return None, 'Cannot create a timesheet entry for a future date.'
+
+    unit_amount = data.get('unit_amount')
+    if unit_amount is None or unit_amount == '':
+        return None, 'unit_amount is required (in hours).'
+    try:
+        unit_amount = float(unit_amount)
+    except (ValueError, TypeError):
+        return None, 'unit_amount must be a number.'
+    if unit_amount <= 0:
+        return None, 'unit_amount must be greater than zero.'
+    if unit_amount > MAX_TIMESHEET_HOURS_PER_ENTRY:
+        return None, f'unit_amount cannot exceed {MAX_TIMESHEET_HOURS_PER_ENTRY} hours per entry.'
+
+    # 'description' on the API maps to 'name' on the model
+    description = str(data.get('description', '')).strip()[:500]
+
+    return {
+        'project_id': project_id,
+        'task_id': task_id,
+        'date': date_val,
+        'unit_amount': unit_amount,
+        'name': description or '/',  # Odoo convention: '/' for blank
+    }, None
